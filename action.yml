@@ -1,13 +1,16 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'acticord'
+description: 'Sends an entry to acticord service'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  url:
+    description: 'URL of the deployed acticord service'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps 
-    description: 'The message to output'
+  icon:
+    description: 'Repository icon'
+    required: true
+  state:
+    description: 'Current job state [started, succeeded, failed]'
+    required: true
+    default: 'started'
 runs:
   using: 'node12'
   main: 'dist/index.js'

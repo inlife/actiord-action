@@ -28,8 +28,6 @@ async function run() {
         if (!res.ok) {
             throw new Error("Fetch: " + await res.text())
         }
-
-        core.setOutput('finished', new Date().toTimeString());
     }
     catch (error) {
         core.setFailed(error.message);
