@@ -405,17 +405,13 @@ async function run() {
         const icon = core.getInput('icon')
         const data = {owner, repo, icon, sha, workflow, actor, state, commitid, commiturl, commitmsg, runId}
 
+        console.log('sending data to', url)
+
         const res = await fetch(url, {
             method: 'POST',
             headers: {'content-type': 'application/json'},
             body: JSON.stringify(data)
         })
-
-        if (!res.ok) {
-            throw new Error("Fetch: " + await res.text())
-        }
-
-        core.setOutput('finished', new Date().toTimeString());
     }
     catch (error) {
         core.setFailed(error.message);
