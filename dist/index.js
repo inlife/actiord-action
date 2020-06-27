@@ -405,6 +405,8 @@ async function run() {
         const icon = core.getInput('icon')
         const data = {owner, repo, icon, sha, workflow, actor, state, commitid, commiturl, commitmsg, runId}
 
+        console.log('actionId', process.env.GITHUB_ACTION)
+
         const res = await fetch(url, {
             method: 'POST',
             headers: {'content-type': 'application/json'},
