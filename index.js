@@ -19,15 +19,11 @@ async function run() {
         const icon = core.getInput('icon')
         const data = {owner, repo, icon, sha, workflow, actor, state, commitid, commiturl, commitmsg, runId}
 
-        console.log('sending data', data)
         const res = await fetch(url, {
             method: 'POST',
             headers: {'content-type': 'application/json'},
             body: JSON.stringify(data)
         })
-
-        console.log('result:', res)
-        console.log('result text:', await res.text())
     }
     catch (error) {
         core.setFailed(error.message);
