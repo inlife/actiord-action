@@ -10,9 +10,9 @@ async function run() {
         // const repoURL = `https://github.com/${owner}/${repo}`
         // const workflowURL = `${repoURL}/commit/${sha}/checks`
 
-        const commitid = event.head_commit.id.substring(0, 7)
-        const commiturl = event.head_commit.url
-        const commitmsg = event.head_commit.message
+        const commitid = event.commit.id.substring(0, 7)
+        const commiturl = event.commit.url
+        const commitmsg = event.commit.message
 
         const url = core.getInput('url')
         const state = core.getInput('state')
