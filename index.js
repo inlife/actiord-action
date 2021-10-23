@@ -6,27 +6,34 @@ async function run() {
     try {
         const ctx = github.context
         const { owner, repo } = ctx.repo
-        const { sha, workflow, actor, event, runId } = ctx
+        const { sha, workflow, actor, runId } = ctx
         // const repoURL = `https://github.com/${owner}/${repo}`
         // const workflowURL = `${repoURL}/commit/${sha}/checks`
 
-        const commitid = event.commit.id.substring(0, 7)
-        const commiturl = event.commit.url
-        const commitmsg = event.commit.message
+        const commits = ctx.payload.commits.slice(ctx.payload.commits.length - 1) || []
+        const commit_sha = process.env.GITHUB_SHA
 
-        const url = core.getInput('url')
-        const state = core.getInput('state')
-        const icon = core.getInput('icon')
-        const data = {owner, repo, icon, sha, workflow, actor, state, commitid, commiturl, commitmsg, runId}
+        if (commits.length > 0) {
+            const commitid = commit_sha.substring(0, 7)
+            const commiturl = commits[0].url
+            const commitmsg = commits[0].title
 
-        const res = await fetch(url, {
-            method: 'POST',
-            headers: {'content-type': 'application/json'},
-            body: JSON.stringify(data)
-        })
+            const url = core.getInput('url')
+            const icon = core.getInput('icon')
+            const state = core.getInput('state')
+            const discord_webhook = core.getInput('discord_webhook')
 
-        if (!res.ok) {
-            throw new Error("Fetch: " + await res.text())
+            const data = {owner, repo, icon, sha, workflow, actor, state, commitid, commiturl, commitmsg, runId, discord_webhook}
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {'content-type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+
+            if (!res.ok) {
+                throw new Error("Fetch: " + await res.text())
+            }
         }
 
         core.setOutput('finished', new Date().toTimeString());
