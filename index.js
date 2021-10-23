@@ -5,27 +5,38 @@ const github = require('@actions/github')
 async function run() {
     try {
         const ctx = github.context
-        const { owner, repo } = ctx.repo
-        const { eventName, sha, ref, workflow, actor, payload, runId } = ctx
-        const repoURL = `https://github.com/${owner}/${repo}`
-        const workflowURL = `${repoURL}/commit/${sha}/checks`
+        const { sha, workflow, actor, runId } = ctx
+        // const repoURL = `https://github.com/${owner}/${repo}`
+        // const workflowURL = `${repoURL}/commit/${sha}/checks`
 
-        const commitid = payload.head_commit.id.substring(0, 7)
-        const commiturl = payload.head_commit.url
-        const commitmsg = payload.head_commit.message
+        const commits = ctx.payload.commits.slice(ctx.payload.commits.length - 1) || []
+        const commit_sha = process.env.GITHUB_SHA
 
-        const url = core.getInput('url')
-        const state = core.getInput('state')
-        const icon = core.getInput('icon')
-        const data = {owner, repo, icon, sha, workflow, actor, state, commitid, commiturl, commitmsg, runId}
+        if (commits.length > 0) {
+            const commitid = commit_sha.substring(0, 7)
+            const commiturl = commits[0].url
+            const commitmsg = commits[0].title
 
-        console.log('actionId', process.env.GITHUB_ACTION)
+            const url = core.getInput('url')
+            const icon = core.getInput('icon')
+            const state = core.getInput('state')
+            const discord_token = core.getInput('discord_token')
+            const discord_channel = core.getInput('discord_channel')
 
-        const res = await fetch(url, {
-            method: 'POST',
-            headers: {'content-type': 'application/json'},
-            body: JSON.stringify(data)
-        })
+            const data = {owner, repo, icon, sha, workflow, actor, state, commitid, commiturl, commitmsg, runId, discord_token, discord_channel}
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {'content-type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+
+            if (!res.ok) {
+                throw new Error("Fetch: " + await res.text())
+            }
+        }
+
+        core.setOutput('finished', new Date().toTimeString());
     }
     catch (error) {
         core.setFailed(error.message);
