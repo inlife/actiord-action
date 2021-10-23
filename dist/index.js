@@ -295,9 +295,10 @@ async function run() {
             const url = core.getInput('url')
             const icon = core.getInput('icon')
             const state = core.getInput('state')
-            const discord_webhook = core.getInput('discord_webhook')
+            const discord_token = core.getInput('discord_token')
+            const discord_channel = core.getInput('discord_channel')
 
-            const data = {owner, repo, icon, sha, workflow, actor, state, commitid, commiturl, commitmsg, runId, discord_webhook}
+            const data = {owner, repo, icon, sha, workflow, actor, state, commitid, commiturl, commitmsg, runId, discord_token, discord_channel}
 
             const res = await fetch(url, {
                 method: 'POST',
