@@ -9,6 +9,8 @@ async function run() {
         // const repoURL = `https://github.com/${owner}/${repo}`
         // const workflowURL = `${repoURL}/commit/${sha}/checks`
 
+        const {owner, repo} = ctx.repository.split('/')
+
         const commits = ctx.payload.commits.slice(ctx.payload.commits.length - 1) || []
         const commit_sha = process.env.GITHUB_SHA
 
