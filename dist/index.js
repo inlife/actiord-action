@@ -304,7 +304,7 @@ async function run() {
         if (commits.length > 0) {
             const commitid = commit_sha.substring(0, 7)
             const commiturl = commits[0].url
-            const commitmsg = commits[0].title
+            const commitmsg = commits[0].message
 
             const url = core.getInput('url')
             const icon = core.getInput('icon')
