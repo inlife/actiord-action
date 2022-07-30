@@ -293,8 +293,8 @@ async function run() {
             return
         }
 
-        const repo = ctx.repository.name
-        const owner = ctx.repository.organization
+        const repo = ctx.payload.repository.name
+        const owner = ctx.payload.repository.organization
 
         const commits = ctx.payload.commits.slice(ctx.payload.commits.length - 1) || []
         const commit_sha = process.env.GITHUB_SHA
