@@ -299,6 +299,8 @@ async function run() {
         const commits = ctx.payload.commits.slice(ctx.payload.commits.length - 1) || []
         const commit_sha = process.env.GITHUB_SHA
 
+        console.log(ctx.payload.commits)
+
         if (commits.length > 0) {
             const commitid = commit_sha.substring(0, 7)
             const commiturl = commits[0].url
