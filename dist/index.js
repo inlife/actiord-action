@@ -286,13 +286,15 @@ async function run() {
     try {
         const ctx = github.context
         const { sha, workflow, actor, runId } = ctx
-        // const repoURL = `https://github.com/${owner}/${repo}`
-        // const workflowURL = `${repoURL}/commit/${sha}/checks`
 
-        console.log(ctx)
-        console.log(github)
+        if (ctx.eventName !== 'push') {
+            console.warn('push handler can be executed only on "push" action triggers')
+            core.setOutput('data', 'push handler can be executed only on "push" action triggers')
+            return
+        }
 
-        const {owner, repo} = ctx.repository.split('/')
+        const repo = ctx.repository.name
+        const owner = ctx.repository.organization
 
         const commits = ctx.payload.commits.slice(ctx.payload.commits.length - 1) || []
         const commit_sha = process.env.GITHUB_SHA
