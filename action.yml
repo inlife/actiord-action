@@ -11,6 +11,14 @@ inputs:
     description: 'Current job state [started, succeeded, failed]'
     required: true
     default: 'started'
+  discord_token:
+    description: 'Discord bot token'
+    required: false
+    default: ''
+  discord_channel:
+    description: 'Discord channel ID'
+    required: false
+    default: ''
 runs:
   using: 'node16'
   main: 'dist/index.js'
